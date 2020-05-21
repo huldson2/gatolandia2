@@ -13,7 +13,7 @@ require ('_config.php');
     $titulo --> Define o título "desta" página.
     Se = "", usa o título e o slogan do site.
 */
-$titulo = "";
+$titulo = "noticias";
 
 /*
     $css --> Carrega o CSS adicional "desta" página.
@@ -35,7 +35,7 @@ $js = "";
     Valores possíveis: "", "artigos", "contatos", "sobre", "procurar", "noticias".
     Qualquer outro valor = "".
 */
-$menu = "";
+$menu = "noticias";
 
 /////////////////////////////////////////////////////
 // Seus códigos PHP para esta página começam aqui! //
