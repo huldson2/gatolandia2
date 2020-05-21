@@ -20,7 +20,7 @@ $titulo = "noticias";
     Se "", não carrega CSS adicional.
     Exemplo: /css/template.css
 */
-$css = "";
+$css = "/css/noticias.css";
 
 /*
     $js --> Carrega o JavaScript adicional "desta" página.
@@ -53,7 +53,7 @@ require ('_header.php');
 
 ?> 
 
-<h2>Proin vestibulum blandit</h2>
+<h2>Notícias</h2>
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur facilisis sapien vel ultrices molestie. Phasellus ut tellus feugiat, tincidunt orci in, lobortis urna. Morbi eu efficitur lectus. Nullam eleifend tellus quis consequat hendrerit. Vivamus nec hendrerit nibh. Nam auctor viverra lacus ut lobortis. In odio eros, semper a tellus eget, facilisis faucibus nulla.</p>
 <a href="http://github.com/huldson2">Meu Github</a>
 <p lang="en">Nullam scelerisque nisi est, a tincidunt nulla dictum vitae. Integer tincidunt felis lectus, eu sollicitudin mauris euismod vel. Aenean consectetur, arcu quis feugiat convallis, quam quam sollicitudin quam, in aliquet nulla ipsum et est. Donec in maximus magna, rutrum pretium augue. Donec quis pretium dui. Nulla tempor a velit eu finibus. Donec egestas ante vitae odio ultrices, vel egestas odio auctor. Nullam dictum lacus ut augue tempor ornare. Aenean vel nisl sit amet quam lobortis tempor. Ut id bibendum urna, at cursus justo. Quisque nisi risus, egestas in mi in, semper varius ipsum. Sed euismod bibendum pellentesque.</p>
