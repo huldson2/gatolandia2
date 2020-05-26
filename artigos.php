@@ -69,6 +69,44 @@ HTML;
 
 }
 
+///// Obtendo lista de Categorias /////
+
+// Query de consulta ao banco de dados
+$sql = "SELECT * FROM categorias ORDER BY nome";
+
+// Executa a query
+$res = $conn->query($sql);
+
+// Declara variável que exibe as categorias
+$categorias = '<ul>';
+
+// Loop para obter cada registro do banco de dados
+while ($cat = $res->fetch_assoc()) {
+
+    // Conta o total de artigos nesta categoria
+    $sql2 = "SELECT id_art_cat FROM `art_cat` WHERE categoria_id = {$cat['id_categoria']}";
+
+    // DEBUG: print_r($sql2); echo "\n";
+
+    // Executa a query
+    $res2 = $conn->query($sql2);
+
+    // Total de artigos
+    $total = $res2->num_rows;
+
+    // Só exibe categoria se tiver artigo nela
+    if($total > 0) {
+        // Cria a lista de categorias usando HEREDOC
+        $categorias .= <<<HTML
+        <li><a href="artigos.php?c={$cat['id_categoria']}">{$cat['nome']}</a> <small><sup>{$total}</sup></small></li>
+HTML;
+    }
+}
+
+// Fecha a lista aberta na declaração
+$categorias .= '</ul>';
+
+
 //////////////////////////////////////////////////////
 // Seus códigos PHP para esta página terminam aqui! //
 // Teoricamente, não precisa alterar nada abaixo!   //
@@ -87,29 +125,9 @@ require '_header.php';
     <div class="col1"><?php echo $artigos ?></div>
     <aside class="col2">
         <h3>Categorias</h3>
-  <?php  
-// tentativa de puxar o bando de dado para colocar os registros da tabela categoria
+        <?php echo $categorias ?>
+    </aside>
 
- //   $sql = "SELECT nome FROM categorias";
- //   $resource = $conn->query($sql);
- //   $categoria = '';
- //   while ($cat = $resource->fetch_assoc()) {
- //       $categoria .= <<<HTML
- //HTML;
-//}
- ?>
-        <ul>
-            <li><a href="artigo.php?c={id_categoria}">{nome}</a><sup>{art_cat}</sup></li>
-            <li><a href="artigos.php?c={id_categoria}">{Nome da categoria}</a></li>
-            <li><a href="artigos.php?c={id_categoria}">{Nome da categoria}</a></li>
-            <li>...</li>
-        </ul>
-
-   </aside>
-
-    <!-- estava tentando fechar o php aqui  -->
-  
-   
 </div>
 
 <?php
