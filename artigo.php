@@ -101,6 +101,9 @@ $artigo = <<<HTML
 
 <div class="categorias">{$categorias}</div>
 
+<hr>
+<p class="center"><a href="/artigos.php">Todos os artigos</a></p>
+
 <div id="modal">
     <div class="modal-box">
         <div class="modal-body">

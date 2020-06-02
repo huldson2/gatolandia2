@@ -41,8 +41,29 @@ $menu = "artigos";
 // Seus códigos PHP para esta página começam aqui! //
 /////////////////////////////////////////////////////
 
-// Query de consulta ao banco de dados
-$sql = "SELECT id_artigo, titulo, imagem, resumo FROM artigos WHERE status = 'ativo' ORDER BY data DESC";
+// Capturar o ID da URL
+$idcat = (isset($_GET['c'])) ? intval($_GET['c']) : 0;
+
+// DEBUG: print_r($idcat); exit();
+
+// Se pediu uma categoria, obtém artigos desta categoria
+if ($idcat > 0) {
+
+    $sql = <<<SQL
+SELECT id_artigo, titulo, imagem, resumo, id_categoria, nome FROM artigos
+    INNER JOIN art_cat ON artigo_id = id_artigo
+    INNER JOIN categorias ON categoria_id = id_categoria
+WHERE categoria_id = '{$idcat}' AND status = 'ativo' 
+    ORDER BY data DESC
+SQL;
+
+    // Se pediu todos os artigos
+} else {
+
+    // Query de consulta ao banco de dados
+    $sql = "SELECT id_artigo, titulo, imagem, resumo FROM artigos WHERE status = 'ativo' ORDER BY data DESC";
+
+}
 
 // Executa a query
 $res = $conn->query($sql);
@@ -50,11 +71,14 @@ $res = $conn->query($sql);
 // Declara variável que exibe os artigos
 $artigos = '';
 
-// Loop para obter cada registro do banco de dados
-while ($art = $res->fetch_assoc()) {
+// Se existem artigos a serem exibidos
+if ($res->num_rows > 0) {
 
-    // Cria a lista de artigos usando HEREDOC
-    $artigos .= <<<HTML
+    // Loop para obter cada registro do banco de dados
+    while ($art = $res->fetch_assoc()) {
+
+        // Cria a lista de artigos usando HEREDOC
+        $artigos .= <<<HTML
 
 <div class="artigo">
 
@@ -67,7 +91,20 @@ while ($art = $res->fetch_assoc()) {
 
 HTML;
 
+        // Acrescenta nome da categoria no titulo
+        if ($idcat > 0) {
+            $titulo = "Artigos Recentes em \"{$art['nome']}\"";
+        }
+    } // end while
+
+    // Se não existem artigos
+} else {
+
+    $artigos = '<p class="center">Nenhum artigo encontrado!</p>';
 }
+
+// Título da página = título do HTML
+$cattitulo = $titulo;
 
 ///// Obtendo lista de Categorias /////
 
@@ -88,7 +125,7 @@ while ($cat = $res->fetch_assoc()) {
 
     // DEBUG: print_r($sql2); echo "\n";
 
-    // Executa a query
+    // Executa aquery
     $res2 = $conn->query($sql2);
 
     // Total de artigos
@@ -99,13 +136,13 @@ while ($cat = $res->fetch_assoc()) {
         // Cria a lista de categorias usando HEREDOC
         $categorias .= <<<HTML
         <li><a href="artigos.php?c={$cat['id_categoria']}">{$cat['nome']}</a> <small><sup>{$total}</sup></small></li>
+
 HTML;
     }
 }
 
 // Fecha a lista aberta na declaração
 $categorias .= '</ul>';
-
 
 //////////////////////////////////////////////////////
 // Seus códigos PHP para esta página terminam aqui! //
@@ -117,12 +154,13 @@ require '_header.php';
 
 ?>
 
-<h2>Artigos Recentes</h2>
-<small class="subtitulo">Mais recentes primeiro.</small>
-
 <div class="row">
 
-    <div class="col1"><?php echo $artigos ?></div>
+    <div class="col1">
+        <h2><?php echo $cattitulo ?></h2>
+        <small class="subtitulo">Mais recentes primeiro.</small>
+        <?php echo $artigos ?>
+    </div>
     <aside class="col2">
         <h3>Categorias</h3>
         <?php echo $categorias ?>
